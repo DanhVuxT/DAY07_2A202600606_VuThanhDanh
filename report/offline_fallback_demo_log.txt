@@ -1,0 +1,36 @@
+=== Manual File Test ===
+Accepted file types: .md, .txt
+Input file list:
+  - data/python_intro.txt
+  - data/vector_store_notes.md
+  - data/rag_system_design.md
+  - data/customer_support_playbook.txt
+  - data/chunking_experiment_report.md
+  - data/vi_retrieval_notes.md
+
+Loaded 6 documents
+  - python_intro: data/python_intro.txt
+  - vector_store_notes: data/vector_store_notes.md
+  - rag_system_design: data/rag_system_design.md
+  - customer_support_playbook: data/customer_support_playbook.txt
+  - chunking_experiment_report: data/chunking_experiment_report.md
+  - vi_retrieval_notes: data/vi_retrieval_notes.md
+
+Embedding backend: mock embeddings fallback
+
+Stored 6 documents in EmbeddingStore
+
+=== EmbeddingStore Search Test ===
+Query: What are embeddings used for in search?
+1. score=0.137 source=data/rag_system_design.md
+   content preview: # RAG System Design for an Internal Knowledge Assistant  ## Background  A product team wants an assistant that can answe...
+2. score=0.044 source=data/customer_support_playbook.txt
+   content preview: Customer Support Playbook for the AI Knowledge Assistant  The support team uses the knowledge assistant to answer repeti...
+3. score=0.007 source=data/vi_retrieval_notes.md
+   content preview: # Ghi chú về Retrieval cho Trợ lý Tri thức Nội bộ  Trong một hệ thống trợ lý tri thức nội bộ, retrieval đóng vai trò tìm...
+
+=== KnowledgeBaseAgent Test ===
+LLM backend: offline fallback demo
+Question: What are embeddings used for in search?
+Agent answer:
+[OFFLINE FALLBACK] Generated answer from retrieved prompt preview: You are answering using the provided context only. Context: - # RAG System Design for an Internal Knowledge Assistant  ## Background  A product team wants an assistant that can answer questions about onboarding, deployment workflows, service ownership, and troubleshooting steps. The company already has documentation spread across markdown handbooks, engineering runbooks, and support notes, but emp...

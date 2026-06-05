@@ -1,0 +1,104 @@
+=== DATA INVENTORY ===
+- data/python_intro.txt | category=programming | language=en | owner=Python / AI study notes | chars=1944 | pii=no
+- data/vector_store_notes.md | category=vector_store | language=en | owner=Group RAG notes | chars=2123 | pii=no
+- data/rag_system_design.md | category=rag_design | language=en | owner=Internal knowledge assistant scenario | chars=2391 | pii=no
+- data/customer_support_playbook.txt | category=support | language=en | owner=Support operations scenario | chars=1692 | pii=no
+- data/chunking_experiment_report.md | category=chunking | language=en | owner=Group experiment summary | chars=1987 | pii=no
+- data/vi_retrieval_notes.md | category=retrieval | language=vi | owner=Vietnamese retrieval notes | chars=1667 | pii=no
+
+=== CHUNKING STRATEGY COMPARATOR BASELINE ===
+
+File: vector_store_notes.md
+  fixed_size: count=5 | avg_length=424.6
+  by_sentences: count=10 | avg_length=210.2
+  recursive: count=7 | avg_length=301.6
+
+File: rag_system_design.md
+  fixed_size: count=5 | avg_length=478.2
+  by_sentences: count=7 | avg_length=338.9
+  recursive: count=7 | avg_length=339.9
+
+File: customer_support_playbook.txt
+  fixed_size: count=4 | avg_length=423.0
+  by_sentences: count=4 | avg_length=420.8
+  recursive: count=5 | avg_length=336.8
+
+=== SIMILARITY PREDICTIONS ===
+1. predicted=high   | actual=0.3333
+   A: Vector stores keep embeddings for semantic search.
+   B: A vector database retrieves similar chunks for RAG.
+2. predicted=medium | actual=0.0000
+   A: Metadata filters reduce noisy retrieval results.
+   B: Access control and language fields narrow search candidates.
+3. predicted=medium | actual=0.2236
+   A: Sentence chunking keeps natural language boundaries.
+   B: Recursive chunking first tries paragraph separators.
+4. predicted=medium | actual=0.1826
+   A: Python is useful for AI model workflows.
+   B: FastAPI can expose Python logic over HTTP.
+5. predicted=low    | actual=0.0000
+   A: Retrieval should escalate when evidence is missing.
+   B: Bananas are yellow fruits.
+
+=== CHUNK + EMBED + INDEX ===
+Raw docs: 6
+Chunks indexed: 38
+Chunking strategy: SentenceChunker(max_sentences_per_chunk=3)
+
+=== QUERY DEMO ===
+Answer backend: offline fallback only. No OpenRouter/OpenAI key is required for this submission.
+
+Query: What is a vector store used for in RAG?
+Gold answer: A vector store keeps embeddings and retrieves the most similar chunks for semantic search or retrieval-augmented generation.
+Expected source: data/vector_store_notes.md
+Filter: {'category': 'vector_store'}
+  1. score=0.714 | source=data/vector_store_notes.md | category=vector_store | chunk=0 | snippet=# Vector Store Notes A vector store is a database or storage layer designed to keep embeddings and retrieve the most similar items to a query vector. In practical AI systems, a vector store is often used to support seman...
+  2. score=0.516 | source=data/vector_store_notes.md | category=vector_store | chunk=3 | snippet=3. **Store the vector and metadata** so records can be searched and filtered. 4....
+  3. score=0.333 | source=data/vector_store_notes.md | category=vector_store | chunk=7 | snippet=This filtering step reduces noise and can prevent the application from surfacing text from the wrong department or outdated material. ## Common Risks Vector stores are powerful, but retrieval is not magically correct....
+Mini answer: [OFFLINE FALLBACK] Based on data/vector_store_notes.md: Vector Store Notes A vector store is a database or storage layer designed to keep embeddings and retrieve the most similar items to a query vector. In practical AI systems, a vector store is often used to support semantic search, recommendation, clustering workflows, and retrieval-augmented generation.
+
+Query: How can metadata filters improve retrieval precision?
+Gold answer: Metadata filters narrow the search space by fields such as source, language, department or access level, reducing noisy or unsafe results.
+Expected source: data/vector_store_notes.md
+Filter: {'category': 'vector_store'}
+  1. score=0.358 | source=data/vector_store_notes.md | category=vector_store | chunk=6 | snippet=Teams frequently store fields such as document source, language, author, product area, publication date, and access control level. When a user asks a question about a specific domain, metadata filters can narrow the sear...
+  2. score=0.258 | source=data/vector_store_notes.md | category=vector_store | chunk=7 | snippet=This filtering step reduces noise and can prevent the application from surfacing text from the wrong department or outdated material. ## Common Risks Vector stores are powerful, but retrieval is not magically correct....
+  3. score=0.217 | source=data/vector_store_notes.md | category=vector_store | chunk=5 | snippet=If chunks are too large, they may contain too many unrelated ideas and dilute semantic relevance. ## Metadata Matters Metadata is often as important as the vector itself....
+Mini answer: [OFFLINE FALLBACK] Based on data/vector_store_notes.md: Teams frequently store fields such as document source, language, author, product area, publication date, and access control level. When a user asks a question about a specific domain, metadata filters can narrow the search space and improve precision.
+
+Query: When should the support assistant escalate instead of answering?
+Gold answer: If retrieval is insufficient or no document explains the issue, the assistant should recommend escalation instead of improvising.
+Expected source: data/customer_support_playbook.txt
+Filter: {'category': 'support'}
+  1. score=0.389 | source=data/customer_support_playbook.txt | category=support | chunk=0 | snippet=Customer Support Playbook for the AI Knowledge Assistant The support team uses the knowledge assistant to answer repetitive questions about account setup, billing errors, password recovery, and service limitations. To ma...
+  2. score=0.378 | source=data/customer_support_playbook.txt | category=support | chunk=2 | snippet=If these sources are mixed together without filtering, the assistant may surface internal-only procedures to the wrong audience or retrieve engineering details when the user only needs a short customer-safe explanation. ...
+  3. score=0.218 | source=data/customer_support_playbook.txt | category=support | chunk=1 | snippet=When writing support content, authors should avoid vague statements such as "check the settings" or "contact engineering if needed." Instead, each article should specify the exact page, button, or log source that an agen...
+Mini answer: [OFFLINE FALLBACK] Based on data/customer_support_playbook.txt: Customer Support Playbook for the AI Knowledge Assistant The support team uses the knowledge assistant to answer repetitive questions about account setup, billing errors, password recovery, and service limitations. To make retrieval useful, the indexed documents should contain clear issue descriptions, step-by-step resolutions, escalation criteria, and references to the owning team.
+
+Query: Trong hệ thống trợ lý tri thức nội bộ, retrieval đóng vai trò gì?
+Gold answer: Retrieval tìm những đoạn tài liệu phù hợp nhất trước khi mô hình ngôn ngữ tạo câu trả lời.
+Expected source: data/vi_retrieval_notes.md
+Filter: {'language': 'vi'}
+  1. score=0.459 | source=data/vi_retrieval_notes.md | category=retrieval | chunk=0 | snippet=# Ghi chú về Retrieval cho Trợ lý Tri thức Nội bộ Trong một hệ thống trợ lý tri thức nội bộ, retrieval đóng vai trò tìm ra những đoạn tài liệu phù hợp nhất trước khi mô hình ngôn ngữ tạo câu trả lời. Mục tiêu không chỉ l...
+  2. score=0.329 | source=data/vi_retrieval_notes.md | category=retrieval | chunk=4 | snippet=Trong thực tế, retrieval không phải lúc nào cũng đúng. Một số lỗi thường gặp là tài liệu cũ vẫn xếp hạng cao, từ khóa trong câu hỏi không khớp với cách diễn đạt trong tài liệu, hoặc embedding model chưa xử lý tốt nội dun...
+  3. score=0.234 | source=data/vi_retrieval_notes.md | category=retrieval | chunk=1 | snippet=Một pipeline retrieval điển hình bắt đầu từ việc thu thập tài liệu, làm sạch nội dung, chia nhỏ thành các chunk có ý nghĩa, sau đó tạo embedding cho từng chunk. Khi người dùng đặt câu hỏi, hệ thống sẽ tạo embedding cho c...
+Mini answer: [OFFLINE FALLBACK] Based on data/vi_retrieval_notes.md: Ghi chú về Retrieval cho Trợ lý Tri thức Nội bộ Trong một hệ thống trợ lý tri thức nội bộ, retrieval đóng vai trò tìm ra những đoạn tài liệu phù hợp nhất trước khi mô hình ngôn ngữ tạo câu trả lời. Mục tiêu không chỉ là trả lời trôi chảy mà còn phải bám sát nguồn dữ liệu đã được lưu trữ.
+
+Query: Why is Python useful for AI applications?
+Gold answer: Python is useful for AI because it supports data cleaning, model training, evaluation scripts and integration with AI libraries and application logic.
+Expected source: data/python_intro.txt
+Filter: {'category': 'programming'}
+  1. score=0.289 | source=data/python_intro.txt | category=programming | chunk=3 | snippet=Despite its flexibility, Python has trade-offs. It is usually slower than low-level compiled languages for CPU-intensive workloads, and teams must pay attention to environment management, dependency pinning, and performa...
+  2. score=0.240 | source=data/python_intro.txt | category=programming | chunk=0 | snippet=Python is a high-level programming language widely used for automation, backend services, data analysis, scientific computing, and machine learning. Teams often choose Python because the language emphasizes readability, ...
+  3. score=0.213 | source=data/python_intro.txt | category=programming | chunk=4 | snippet=A common best practice is to keep Python projects structured and testable. That means separating data models from business logic, writing unit tests for key utilities, and keeping manual demos simple and reproducible. In...
+Mini answer: [OFFLINE FALLBACK] Based on data/python_intro.txt: Despite its flexibility, Python has trade-offs. It is usually slower than low-level compiled languages for CPU-intensive workloads, and teams must pay attention to environment management, dependency pinning, and performance bottlenecks.
+
+Top-1 relevant: 5/5
+Top-3 relevant: 5/5
+
+=== FAILURE CASE ===
+Query: How to improve the system?
+This query is too broad, so results may mix RAG design, vector store notes, Python notes and support playbook.
+  1. score=0.224 | source=data/vector_store_notes.md
+  2. score=0.177 | source=data/rag_system_design.md
+  3. score=0.154 | source=data/rag_system_design.md
